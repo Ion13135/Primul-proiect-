@@ -7,12 +7,22 @@ def afiseaza_meniu():
     print("5. Iesire")
 
 
+def adauga_contact():
+    nume = input("Nume contact: ")
+    telefon = input("Telefon: ")
+
+    with open("contacte.txt", "a") as fisier:
+        fisier.write(f"{nume},{telefon}\n")
+
+    print(f"Contactul {nume} a fost adaugat!")
+
+
 while True:
     afiseaza_meniu()
     optiune = input("Alege o optiune (1-5): ")
 
     if optiune == "1":
-        print("Aici vom adauga un contact")
+        adauga_contact()
 
     elif optiune == "2":
         print("Aici vom afisa contactele")
