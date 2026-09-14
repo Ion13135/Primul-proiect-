@@ -17,6 +17,23 @@ def adauga_contact():
     print(f"Contactul {nume} a fost adaugat!")
 
 
+def afiseaza_contacte():
+    try:
+        with open("contacte.txt", "r") as fisier:
+            linii = fisier.readlines()
+
+        if not linii:
+            print("Nu exista niciun contact salvat.")
+            return
+
+        for index, linie in enumerate(linii, start=1):
+            nume, telefon = linie.strip().split(",")
+            print(f"{index}. {nume} - {telefon}")
+
+    except FileNotFoundError:
+        print("Nu exista niciun contact salvat.")
+
+
 while True:
     afiseaza_meniu()
     optiune = input("Alege o optiune (1-5): ")
@@ -25,7 +42,7 @@ while True:
         adauga_contact()
 
     elif optiune == "2":
-        print("Aici vom afisa contactele")
+        afiseaza_contacte()
 
     elif optiune == "3":
         print("Aici vom cauta un contact")
