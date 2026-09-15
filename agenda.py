@@ -26,7 +26,7 @@ def afiseaza_contacte():
             print("Nu exista niciun contact salvat.")
             return
 
-        print("\n=== LISTA CONTACTE ===")
+        print("\n=== LISTA CONTACTELOR ===")
 
         for index, linie in enumerate(linii, start=1):
             nume, telefon = linie.strip().split(",")
@@ -60,6 +60,37 @@ def cauta_contact():
         print("Niciun contact gasit cu acest nume.")
 
 
+def sterge_contact():
+    nume_de_sters = input("Nume contact de sters: ").lower()
+
+    try:
+        with open("contacte.txt", "r") as fisier:
+            linii = fisier.readlines()
+
+    except FileNotFoundError:
+        print("Nu exista niciun contact salvat.")
+        return
+
+    linii_ramase = []
+    gasit = False
+
+    for linie in linii:
+        nume, telefon = linie.strip().split(",")
+
+        if nume.lower() == nume_de_sters:
+            gasit = True
+        else:
+            linii_ramase.append(linie)
+
+    if gasit:
+        with open("contacte.txt", "w") as fisier:
+            fisier.writelines(linii_ramase)
+
+        print("Contactul a fost sters.")
+    else:
+        print("Nu am gasit un contact cu acest nume.")
+
+
 while True:
     afiseaza_meniu()
 
@@ -75,7 +106,7 @@ while True:
         cauta_contact()
 
     elif optiune == "4":
-        print("Aici vom sterge un contact")
+        sterge_contact()
 
     elif optiune == "5":
         print("La revedere!")
