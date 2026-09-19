@@ -1,0 +1,25 @@
+class Produs:
+    def __init__(self, nume, pret, cantitate_stoc):
+        self.nume = nume
+        self.pret = pret
+        self.cantitate_stoc = cantitate_stoc
+
+    def valoare_totala_stoc(self):
+        return self.pret * self.cantitate_stoc
+
+    def __str__(self):
+        return f"{self.nume} - {self.pret} euro - Stoc: {self.cantitate_stoc}"
+
+
+if __name__ == "__main__":
+    produs1 = Produs("Laptop", 3000, 5)
+    produs2 = Produs("Mouse", 80, 20)
+    produs3 = Produs("Tastatura", 250, 10)
+
+    print("=== PRODUSE ===")
+    print(produs1)
+    print(produs2)
+    print(produs3)
+
+    print("\n=== VALOARE TOTALA STOC ===")
+    print(f"{produs1.nume}: {produs1.valoare_totala_stoc()} euro")
