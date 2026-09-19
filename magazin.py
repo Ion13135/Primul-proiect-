@@ -21,19 +21,42 @@ class Magazin:
         for produs in self.produse:
             if produs.nume.lower() == nume_cautat.lower():
                 return produs
+
         return None
+
+    def vinde_produs(self, nume_produs, cantitate):
+        produs = self.cauta_produs(nume_produs)
+
+        if produs is None:
+            print(f"Produsul '{nume_produs}' nu exista in magazin.")
+            return None
+
+        if cantitate > produs.cantitate_stoc:
+            print(
+                f"Stoc insuficient! Disponibil: {produs.cantitate_stoc}, "
+                f"cerut: {cantitate}"
+            )
+            return None
+
+        produs.cantitate_stoc -= cantitate
+
+        total = produs.pret * cantitate
+
+        print(
+            f"Vandut: {cantitate} x {produs.nume} = "
+            f"{total} euro. Stoc ramas: {produs.cantitate_stoc}"
+        )
+
+        return total
 
 
 if __name__ == "__main__":
-    # Cream magazinul
     magazin = Magazin()
 
-    # Cream produsele
     produs1 = Produs("Laptop", 3000, 5)
     produs2 = Produs("Mouse", 80, 20)
     produs3 = Produs("Tastatura", 250, 10)
 
-    # Adaugam produsele
     magazin.adauga_produs(produs1)
     magazin.adauga_produs(produs2)
     magazin.adauga_produs(produs3)
@@ -48,3 +71,15 @@ if __name__ == "__main__":
     print("\n=== CAUTARE PRODUS INEXISTENT ===")
     rezultat = magazin.cauta_produs("Monitor")
     print(rezultat)
+
+    print("\n=== VANZARE REUSITA ===")
+    magazin.vinde_produs("Laptop", 2)
+
+    print("\n=== STOC INSUFICIENT ===")
+    magazin.vinde_produs("Tastatura", 100)
+
+    print("\n=== PRODUS INEXISTENT ===")
+    magazin.vinde_produs("Monitor", 1)
+
+    print("\n=== STOC FINAL ===")
+    magazin.afiseaza_produse()
