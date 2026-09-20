@@ -49,6 +49,36 @@ class Magazin:
 
         return total
 
+    def salveaza_in_fisier(self, nume_fisier="produse.txt"):
+        with open(nume_fisier, "w") as fisier:
+            for produs in self.produse:
+                fisier.write(
+                    f"{produs.nume},{produs.pret},{produs.cantitate_stoc}\n"
+                )
+
+        print(f"Produsele au fost salvate in {nume_fisier}.")
+
+    def incarca_din_fisier(self, nume_fisier="produse.txt"):
+        try:
+            with open(nume_fisier, "r") as fisier:
+                self.produse = []
+
+                for linie in fisier:
+                    nume, pret, cantitate = linie.strip().split(",")
+
+                    produs = Produs(
+                        nume,
+                        float(pret),
+                        int(cantitate)
+                    )
+
+                    self.produse.append(produs)
+
+            print(f"Produsele au fost incarcate din {nume_fisier}.")
+
+        except FileNotFoundError:
+            print(f"Fisierul {nume_fisier} nu exista inca.")
+
 
 if __name__ == "__main__":
     magazin = Magazin()
@@ -83,3 +113,13 @@ if __name__ == "__main__":
 
     print("\n=== STOC FINAL ===")
     magazin.afiseaza_produse()
+
+    print("\n=== SALVARE IN FISIER ===")
+    magazin.salveaza_in_fisier()
+
+    print("\n=== INCARCARE DIN FISIER ===")
+    magazin2 = Magazin()
+
+    magazin2.incarca_din_fisier()
+
+    magazin2.afiseaza_produse()
