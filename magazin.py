@@ -6,8 +6,20 @@ class Magazin:
         self.produse = []
 
     def adauga_produs(self, produs):
+        existent = self.cauta_produs(produs.nume)
+
+        if existent is not None:
+            print(
+                f"Produsul '{produs.nume}' exista deja! "
+                f"Foloseste alt nume."
+            )
+            return
+
         self.produse.append(produs)
-        print(f"Produsul '{produs.nume}' a fost adaugat in magazin.")
+
+        print(
+            f"Produsul '{produs.nume}' a fost adaugat in magazin."
+        )
 
     def afiseaza_produse(self):
         if not self.produse:
@@ -33,8 +45,8 @@ class Magazin:
 
         if cantitate > produs.cantitate_stoc:
             print(
-                f"Stoc insuficient! Disponibil: {produs.cantitate_stoc}, "
-                f"cerut: {cantitate}"
+                f"Stoc insuficient! Disponibil: "
+                f"{produs.cantitate_stoc}, cerut: {cantitate}"
             )
             return None
 
@@ -44,7 +56,8 @@ class Magazin:
 
         print(
             f"Vandut: {cantitate} x {produs.nume} = "
-            f"{total} euro. Stoc ramas: {produs.cantitate_stoc}"
+            f"{total} euro. "
+            f"Stoc ramas: {produs.cantitate_stoc}"
         )
 
         return total
@@ -80,46 +93,63 @@ class Magazin:
             print(f"Fisierul {nume_fisier} nu exista inca.")
 
 
+def afiseaza_meniu():
+    print("\n=== MAGAZIN ===")
+    print("1. Adauga produs")
+    print("2. Afiseaza produse")
+    print("3. Vinde produs")
+    print("4. Salveaza in fisier")
+    print("5. Iesire")
+
+
 if __name__ == "__main__":
     magazin = Magazin()
 
-    produs1 = Produs("Laptop", 3000, 5)
-    produs2 = Produs("Mouse", 80, 20)
-    produs3 = Produs("Tastatura", 250, 10)
+    magazin.incarca_din_fisier()
 
-    magazin.adauga_produs(produs1)
-    magazin.adauga_produs(produs2)
-    magazin.adauga_produs(produs3)
+    while True:
+        afiseaza_meniu()
 
-    print("\n=== TOATE PRODUSELE ===")
-    magazin.afiseaza_produse()
+        optiune = input("Alege o optiune (1-5): ")
 
-    print("\n=== CAUTARE PRODUS EXISTENT ===")
-    rezultat = magazin.cauta_produs("laptop")
-    print(rezultat)
+        if optiune == "1":
+            nume = input("Nume produs: ")
 
-    print("\n=== CAUTARE PRODUS INEXISTENT ===")
-    rezultat = magazin.cauta_produs("Monitor")
-    print(rezultat)
+            try:
+                pret = float(input("Pret: "))
+                cantitate = int(input("Cantitate stoc: "))
 
-    print("\n=== VANZARE REUSITA ===")
-    magazin.vinde_produs("Laptop", 2)
+                produs_nou = Produs(
+                    nume,
+                    pret,
+                    cantitate
+                )
 
-    print("\n=== STOC INSUFICIENT ===")
-    magazin.vinde_produs("Tastatura", 100)
+                magazin.adauga_produs(produs_nou)
 
-    print("\n=== PRODUS INEXISTENT ===")
-    magazin.vinde_produs("Monitor", 1)
+            except ValueError:
+                print("Pret sau cantitate invalida!")
 
-    print("\n=== STOC FINAL ===")
-    magazin.afiseaza_produse()
+        elif optiune == "2":
+            magazin.afiseaza_produse()
 
-    print("\n=== SALVARE IN FISIER ===")
-    magazin.salveaza_in_fisier()
+        elif optiune == "3":
+            nume = input("Nume produs de vandut: ")
 
-    print("\n=== INCARCARE DIN FISIER ===")
-    magazin2 = Magazin()
+            try:
+                cantitate = int(input("Cantitate: "))
+                magazin.vinde_produs(nume, cantitate)
 
-    magazin2.incarca_din_fisier()
+            except ValueError:
+                print("Cantitate invalida!")
 
-    magazin2.afiseaza_produse()
+        elif optiune == "4":
+            magazin.salveaza_in_fisier()
+
+        elif optiune == "5":
+            magazin.salveaza_in_fisier()
+            print("La revedere!")
+            break
+
+        else:
+            print("Optiune invalida.")

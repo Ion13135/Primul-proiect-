@@ -1,3 +1,1 @@
-Laptop,3000,3
-Mouse,80,20
-Tastatura,250,10
+Monitor,350.0,5
