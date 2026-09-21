@@ -1,2 +1,2 @@
-mesaj = "Salut direct din main, modificat!"
+mesaj = "Salut din main SI din branch, combinate!"
 print(mesaj)
